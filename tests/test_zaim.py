@@ -20,19 +20,47 @@ class TestZaim(unittest.TestCase):
         self.assertIn('me', self.zaim.verify().keys())
 
     def test_money(self):
-        self.assertIn('money', self.zaim.money().keys())
+        response = self.zaim.money()
+        self.assertIn('money', response.keys())
 
     def test_category(self): 
-        self.assertIn('categories', self.zaim.category().keys())
+        response = self.zaim.category()
+        self.assertIn('categories', response.keys())
 
     def test_genre(self): 
-        self.assertIn('genres', self.zaim.genre().keys())
+        response = self.zaim.genre()
+        self.assertIn('genres', response.keys())
 
     def test_account(self): 
         self.assertIn('accounts', self.zaim.account().keys())
 
     def test_currency(self): 
         self.assertIn('currencies', self.zaim.currency().keys())
+
+    def __payment(self):
+        response = self.zaim.payment(
+            category_id='101',
+            genre_id='10101',
+            amount=1,
+            date='2020-04-01',
+            comment='comment',
+            name='name',
+            place='place')
+        return response
+
+    def test_payment(self): 
+        response = self.__payment()
+        self.assertIn('money', response.keys())
+        self.zaim.delete('payment', response['money']['id'])
+    
+    def test_update(self): 
+        response = self.__payment()
+        response = self.zaim.update('payment', response['money']['id'], 
+            amount=1,
+            date='2020-04-01',
+            comment='updated comment')
+        self.assertIn('money', response.keys())
+        self.zaim.delete('payment', response['money']['id'])
 
 if __name__ == '__main__':
    unittest.main() 
