@@ -2,7 +2,7 @@
 import requests
 from requests_oauthlib import OAuth1
 
-class Zaim:
+class Api(object):
     def __init__(self, consumer_key, consumer_secret, access_token=None, access_token_secret=None):
         self.__auth = OAuth1(consumer_key, consumer_secret, access_token, access_token_secret)
 

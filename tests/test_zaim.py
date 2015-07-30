@@ -1,7 +1,7 @@
 # coding: utf-8
 import os
 import unittest
-from zaim import Zaim
+import zaim
 
 class TestZaim(unittest.TestCase):
     def setUp(self):
@@ -14,31 +14,31 @@ class TestZaim(unittest.TestCase):
         assert access_token, 'Please set "ZAIM_ACCESS_TOKEN".'
         assert access_token_secret, 'Please set "ZAIM_ACCESS_TOKEN_SECRET".'
 
-        self.zaim = Zaim(consumer_key, consumer_secret, access_token, access_token_secret)
+        self.api = zaim.Api(consumer_key, consumer_secret, access_token, access_token_secret)
 
     def test_verify(self): 
-        self.assertIn('me', self.zaim.verify().keys())
+        self.assertIn('me', self.api.verify().keys())
 
     def test_money(self):
-        response = self.zaim.money()
+        response = self.api.money()
         self.assertIn('money', response.keys())
 
     def test_category(self): 
-        response = self.zaim.category()
+        response = self.api.category()
         self.assertIn('categories', response.keys())
 
     def test_genre(self): 
-        response = self.zaim.genre()
+        response = self.api.genre()
         self.assertIn('genres', response.keys())
 
     def test_account(self): 
-        self.assertIn('accounts', self.zaim.account().keys())
+        self.assertIn('accounts', self.api.account().keys())
 
     def test_currency(self): 
-        self.assertIn('currencies', self.zaim.currency().keys())
+        self.assertIn('currencies', self.api.currency().keys())
 
     def __payment(self):
-        response = self.zaim.payment(
+        response = self.api.payment(
             category_id='101',
             genre_id='10101',
             amount=1,
@@ -51,16 +51,16 @@ class TestZaim(unittest.TestCase):
     def test_payment(self): 
         response = self.__payment()
         self.assertIn('money', response.keys())
-        self.zaim.delete('payment', response['money']['id'])
+        self.api.delete('payment', response['money']['id'])
     
     def test_update(self): 
         response = self.__payment()
-        response = self.zaim.update('payment', response['money']['id'], 
+        response = self.api.update('payment', response['money']['id'], 
             amount=1,
             date='2020-04-01',
             comment='updated comment')
         self.assertIn('money', response.keys())
-        self.zaim.delete('payment', response['money']['id'])
+        self.api.delete('payment', response['money']['id'])
 
 if __name__ == '__main__':
    unittest.main() 
