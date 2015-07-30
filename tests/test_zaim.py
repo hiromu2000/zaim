@@ -34,9 +34,6 @@ class TestZaim(unittest.TestCase):
     def test_account(self): 
         self.assertIn('accounts', self.api.account().keys())
 
-    def test_currency(self): 
-        self.assertIn('currencies', self.api.currency().keys())
-
     def __payment(self):
         response = self.api.payment(
             category_id='101',
