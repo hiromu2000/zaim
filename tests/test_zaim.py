@@ -46,9 +46,17 @@ class TestZaim(unittest.TestCase):
         return response
 
     def test_payment(self): 
-        response = self.__payment()
-        self.assertIn('money', response.keys())
-        self.api.delete('payment', response['money']['id'])
+        self.__payment()
+        response = self.api.money(
+            mapping=1,
+            category_id='101',
+            genre_id='10101',
+            mode='payment',
+            start_date='2020-04-01',
+            end_date='2020-04-01')
+        self.assertTrue(len(response['money']) > 0)
+        for tran in response['money']:
+            self.api.delete('payment', tran['id'])
     
     def test_update(self): 
         response = self.__payment()

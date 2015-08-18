@@ -13,9 +13,9 @@ class Api(object):
 
     def __get(self, path, params=""):
         if hasattr(self, 'auth'):
-            r = requests.get(u"https://api.zaim.net/v2" + path, auth=self.auth, data=params)
+            r = requests.get(u"https://api.zaim.net/v2" + path, auth=self.auth, params=params)
         else:
-            r = requests.get(u"https://api.zaim.net/v2" + path, data=params)
+            r = requests.get(u"https://api.zaim.net/v2" + path, params=params)
         return r.json()
 
     def __put(self, path, params=""):
@@ -29,8 +29,8 @@ class Api(object):
     def verify(self):
         return self.__get(u"/home/user/verify")
 
-    def money(self):
-        return self.__get(u"/home/money")
+    def money(self, **params):
+        return self.__get(u"/home/money", params)
 
     def account(self):
         return self.__get(u"/home/account")
