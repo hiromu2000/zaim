@@ -6,7 +6,7 @@ For functions that require no authentication
 ```python
 >>> import zaim
 >>> api = zaim.Api()
->>> api.account()
+>>> api.default_account()
 ```
 
 For functions that require authentication
