@@ -42,7 +42,8 @@ class TestZaim(unittest.TestCase):
             date='2020-04-01',
             comment='comment',
             name='name',
-            place='place')
+            place='place',
+            from_account_id=0)
         return response
 
     def test_payment(self): 
@@ -66,6 +67,20 @@ class TestZaim(unittest.TestCase):
             comment='updated comment')
         self.assertIn('money', response.keys())
         self.api.delete('payment', response['money']['id'])
+
+    def test_search(self):
+        response = self.__payment()
+        money_id = response['money']['id']
+        response = self.api.search(
+            mapping=1,
+            mode='payment',
+            amount=1,
+            from_account_id=0,
+            comment='comment',
+            place='place',
+            name='name')
+        self.assertTrue(len(response['money']) == 1)
+        self.api.delete('payment', money_id)
 
 if __name__ == '__main__':
    unittest.main() 

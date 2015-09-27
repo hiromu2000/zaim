@@ -67,3 +67,12 @@ class Api(object):
 
     def update(self, mode, money_id, **params):
         return self.__put(u"/home/money/%s/%d" % (mode, money_id), params)
+
+    def search(self, **params):
+        response = self.__get(u"/home/money", params)
+        for tran in response['money'][:]:
+            for key in ['amount', 'from_account_id', 'to_account_id', 'place', 'name', 'comment']:
+                if key in params.keys():
+                    if tran[key] != params[key]:
+                        response['money'].remove(tran)
+        return response
