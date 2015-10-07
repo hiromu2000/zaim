@@ -19,8 +19,21 @@ For functions that require authentication
 >>> api.verify()
 >>> response = api.payment(category_id='101', genre_id='10101', amount=1, date='2020-04-01', comment='comment', name='name', place='place', from_account_id=0)
 >>> api.money(mapping=1, mode='payment', start_date='2020-04-01', end_date='2020-04-01')
+>>> api.delete(mode='payment', money_id=response['money']['id'])
+```
+
+For extended functions
+```python
+>>> import zaim
+>>> api = zaim.ExtendedApi(consumer_key='consumer_key',
+                   consumer_secret='consumer_secret',
+                   access_token='access_token',
+                   access_token_secret='access_token_secret')
+>>> response = api.payment(category_id='101', genre_id='10101', amount=1, date='2020-04-01', comment='comment', name='name', place='place', from_account_id=0)
 >>> api.search(mapping=1, mode='payment', place='place', name='name', comment='comment')
 >>> api.delete(mode='payment', money_id=response['money']['id'])
+>>> api.category_from_name(u'食費')
+>>> api.genre_from_name(u'カフェ')
 ```
 
 # Test
@@ -31,7 +44,8 @@ $ export ZAIM_CONSUMER_KEY=consumer_key
 $ export ZAIM_CONSUMER_SECRET=consumer_secret
 $ export ZAIM_ACCESS_TOKEN=access_token
 $ export ZAIM_ACCESS_TOKEN_SECRET= access_token_secret
-$ python tests/test_zaim.py
+$ python tests/test_api.py
+$ python tests/test_extended_api.py
 ```
 
 # Build

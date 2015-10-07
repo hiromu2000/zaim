@@ -3,7 +3,7 @@ import os
 import unittest
 import zaim
 
-class TestZaim(unittest.TestCase):
+class TestApi(unittest.TestCase):
     def setUp(self):
         consumer_key = os.environ.get("ZAIM_CONSUMER_KEY", "")
         consumer_secret = os.environ.get("ZAIM_CONSUMER_SECRET", "")
@@ -67,20 +67,6 @@ class TestZaim(unittest.TestCase):
             comment='updated comment')
         self.assertIn('money', response.keys())
         self.api.delete('payment', response['money']['id'])
-
-    def test_search(self):
-        response = self.__payment()
-        money_id = response['money']['id']
-        response = self.api.search(
-            mapping=1,
-            mode='payment',
-            amount=1,
-            from_account_id=0,
-            comment='comment',
-            place='place',
-            name='name')
-        self.assertTrue(len(response['money']) == 1)
-        self.api.delete('payment', money_id)
 
 if __name__ == '__main__':
    unittest.main() 

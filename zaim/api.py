@@ -9,22 +9,37 @@ class Api(object):
 
     def __post(self, path, params):
         r = requests.post(u"https://api.zaim.net/v2" + path, auth=self.auth, data=params)
-        return r.json()
+        if r.status_code == 200:
+            return r.json()
+        else:
+            raise Exception(r.text)
 
     def __get(self, path, params=""):
         if hasattr(self, 'auth'):
             r = requests.get(u"https://api.zaim.net/v2" + path, auth=self.auth, params=params)
         else:
             r = requests.get(u"https://api.zaim.net/v2" + path, params=params)
-        return r.json()
+        try:
+            return r.json()
+        except ValueError:
+            print r.text
+            raise
 
     def __put(self, path, params=""):
         r = requests.put(u"https://api.zaim.net/v2" + path, auth=self.auth, data=params)
-        return r.json()
+        try:
+            return r.json()
+        except ValueError:
+            print r.text
+            raise
 
     def __delete(self, path):
         r = requests.delete(u"https://api.zaim.net/v2" + path, auth=self.auth)
-        return r.json()
+        try:
+            return r.json()
+        except ValueError:
+            print r.text
+            raise
 
     def verify(self):
         return self.__get(u"/home/user/verify")
@@ -67,12 +82,3 @@ class Api(object):
 
     def update(self, mode, money_id, **params):
         return self.__put(u"/home/money/%s/%d" % (mode, money_id), params)
-
-    def search(self, **params):
-        response = self.__get(u"/home/money", params)
-        for tran in response['money'][:]:
-            for key in ['amount', 'from_account_id', 'to_account_id', 'place', 'name', 'comment']:
-                if key in params.keys():
-                    if tran[key] != params[key]:
-                        response['money'].remove(tran)
-        return response
