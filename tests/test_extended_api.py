@@ -31,26 +31,30 @@ class TestExtendedApi(unittest.TestCase):
     def test_search(self):
         response = self.__payment()
         money_id = response['money']['id']
-        response = self.api.search(
-            mapping=1,
+        trans = self.api.search(
             mode='payment',
             amount=1,
             from_account_id=0,
             comment='comment',
             place='place',
             name='name')
-        self.assertTrue(len(response['money']) == 1)
+        self.assertTrue(len(trans) == 1)
         self.api.delete('payment', money_id)
 
-    def test_category_from_name(self):
+    def test_search_category(self):
         response = self.api.category()
-        response = self.api.category_from_name(response['categories'][0]['name'])
-        self.assertTrue(len(response['categories']) > 0)
+        categories = self.api.search_category(name=response['categories'][0]['name'])
+        self.assertTrue(len(categories) > 0)
 
-    def test_genre_from_name(self):
+    def test_search_genre(self):
         response = self.api.genre()
-        response = self.api.genre_from_name(response['genres'][0]['name'])
-        self.assertTrue(len(response['genres']) > 0)
+        genres = self.api.search_genre(name=response['genres'][0]['name'])
+        self.assertTrue(len(genres) > 0)
+
+    def test_search_account(self):
+        response = self.api.account()
+        accounts = self.api.search_account(name=response['accounts'][0]['name'])
+        self.assertTrue(len(accounts) > 0)
 
 if __name__ == '__main__':
    unittest.main() 
