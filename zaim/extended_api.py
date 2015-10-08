@@ -4,21 +4,20 @@ from requests_oauthlib import OAuth1
 from api import Api
 
 class ExtendedApi(Api):
-    def search(self, mapping=1, category_id=None, genre_id=None,
-               mode=None, order=None, start_date=None,
-               end_date=None, page=None, limit=None,
-               group_by=None,
-               id_=None, user_id=None, to_account_id=None,
-               from_account_id=None, amount=None, comment=None,
-               active=None, name=None, receipt_id=None,
-               place=None, created=None, currency_code=None):
+    def search(self, place=None, name=None, comment=None, amount=None,
+               to_account_id=None, from_account_id=None,
+               money_id=None, user_id=None, active=None, receipt_id=None,
+               created=None, currency_code=None,
+               mapping=1, category_id=None, genre_id=None,
+               mode=None, order=None, start_date=None, end_date=None,
+               page=None, limit=None, group_by=None):
         response = self.money(mapping=1, category_id=category_id, genre_id=genre_id,
                               mode=mode, order=order, start_date=start_date,
                               end_date=end_date, page=page, limit=limit,
                               group_by=group_by)
         trans = []
-        for tran in response['money'][:]:
-            if id_ is not None and tran['id'] != id_:
+        for tran in response['money']:
+            if money_id is not None and tran['id'] != money_id:
                     continue
             if user_id is not None and tran['user_id'] != user_id:
                     continue
@@ -41,15 +40,16 @@ class ExtendedApi(Api):
             if currency_code is not None and tran['currency_code'] != currency_code:
                     continue
             trans.append(tran)
-        return trans
+        response['money'] = trans
+        return response
 
-    def search_category(self, id_=None, name=None, mode=None,
+    def search_category(self, name=None, category_id=None, mode=None,
                         sort=None, parent_category_id=None, active=None,
                         modified=None):
         response = self.category()
         categories = []
-        for category in response['categories'][:]:
-            if id_ is not None and category['id'] != id_:
+        for category in response['categories']:
+            if category_id is not None and category['id'] != category_id:
                     continue
             if name is not None and category['name'] != name:
                     continue
@@ -64,15 +64,16 @@ class ExtendedApi(Api):
             if modified is not None and category['modified'] != modified:
                     continue
             categories.append(category)
-        return categories
+        response['categories'] = categories
+        return response
 
-    def search_genre(self, id_=None, name=None, sort=None,
+    def search_genre(self, name=None, genre_id=None, sort=None,
                      active=None, category_id=None, parent_genre_id=None,
                      modified=None):
         response = self.genre()
         genres = []
-        for genre in response['genres'][:]:
-            if id_ is not None and genre['id'] != id_:
+        for genre in response['genres']:
+            if genre_id is not None and genre['id'] != genre_id:
                     continue
             if name is not None and genre['name'] != name:
                     continue
@@ -87,15 +88,16 @@ class ExtendedApi(Api):
             if modified is not None and genre['modified'] != modified:
                     continue
             genres.append(genre)
-        return genres
+        response['genres'] = genres
+        return response
 
-    def search_account(self, id_=None, name=None, mode=None,
+    def search_account(self, name=None, account_id=None, mode=None,
                        sort=None, parent_account_id=None, active=None,
                        modified=None):
         response = self.account()
         accounts = []
         for account in response['accounts']:
-            if id_ is not None and account['id'] != id_:
+            if account_id is not None and account['id'] != account_id:
                     continue
             if name is not None and account['name'] != name:
                     continue
@@ -110,4 +112,5 @@ class ExtendedApi(Api):
             if modified is not None and account['modified'] != modified:
                     continue
             accounts.append(account)
-        return accounts
+        response['accounts'] = accounts
+        return response
