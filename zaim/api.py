@@ -7,26 +7,26 @@ class Api(object):
         if not (consumer_key is None or consumer_secret is None or access_token is None or access_token_secret is None):
             self.auth = OAuth1(consumer_key, consumer_secret, access_token, access_token_secret)
 
-    def __post(self, path, params):
-        r = requests.post(u"https://api.zaim.net/v2" + path, auth=self.auth, data=params)
+    def __post(self, path, **kwargs):
+        r = requests.post(u"https://api.zaim.net/v2" + path, auth=self.auth, data=kwargs)
         if r.status_code == 200:
             return r.json()
         else:
             raise Exception(r.text)
 
-    def __get(self, path, params=""):
+    def __get(self, path, **kwargs):
         if hasattr(self, 'auth'):
-            r = requests.get(u"https://api.zaim.net/v2" + path, auth=self.auth, params=params)
+            r = requests.get(u"https://api.zaim.net/v2" + path, auth=self.auth, params=kwargs)
         else:
-            r = requests.get(u"https://api.zaim.net/v2" + path, params=params)
+            r = requests.get(u"https://api.zaim.net/v2" + path, params=kwargs)
         try:
             return r.json()
         except ValueError:
             print r.text
             raise
 
-    def __put(self, path, params=""):
-        r = requests.put(u"https://api.zaim.net/v2" + path, auth=self.auth, data=params)
+    def __put(self, path, **kwargs):
+        r = requests.put(u"https://api.zaim.net/v2" + path, auth=self.auth, data=kwargs)
         try:
             return r.json()
         except ValueError:
@@ -44,8 +44,14 @@ class Api(object):
     def verify(self):
         return self.__get(u"/home/user/verify")
 
-    def money(self, **params):
-        return self.__get(u"/home/money", params)
+    def money(self, mapping=1, category_id=None, genre_id=None,
+              mode=None, order=None, start_date=None, end_date=None,
+              page=None, limit=None, group_by=None):
+        return self.__get(u"/home/money",
+                          mapping=1, category_id=category_id, genre_id=genre_id,
+                          mode=mode, order=order, start_date=start_date,
+                          end_date=end_date, page=page, limit=limit,
+                          group_by=group_by)
 
     def account(self):
         return self.__get(u"/home/account")
@@ -68,17 +74,33 @@ class Api(object):
     def default_currency(self):
         return self.__get(u"/currency")
 
-    def payment(self, **params):
-        return self.__post(u"/home/money/payment", params)
+    def payment(self, mapping=1, category_id=None, genre_id=None,
+                amount=None, date=None, from_account_id=None,
+                comment=None, name=None, place=None):
+        return self.__post(u"/home/money/payment",
+                           mapping=1, category_id=category_id, genre_id=genre_id,
+                           amount=amount, date=date, from_account_id=from_account_id,
+                           comment=comment, name=name, place=place)
 
-    def income(self, **params):
-        return self.__post(u"/home/money/income", params)
+    def income(self, mapping=1, category_id=None, amount=None,
+               date=None, to_account_id=None, comment=None):
+        return self.__post(u"/home/money/income",
+                           mapping=1, category_id=category_id, amount=amount,
+                           date=date, to_account_id=to_account_id, comment=comment)
 
-    def transfer(self, **params):
-        return self.__post(u"/home/money/transfer", params)
+    def transfer(self, mapping=1, amount=None, date=None,
+                 from_account_id=None, to_account_id=None, comment=None):
+        return self.__post(u"/home/money/transfer",
+                           mapping=1, amount=amount, date=date,
+                           from_account_id=from_account_id, to_account_id=to_account_id, comment=comment)
 
     def delete(self, mode, money_id):
         return self.__delete(u"/home/money/%s/%d" % (mode, money_id))
 
-    def update(self, mode, money_id, **params):
-        return self.__put(u"/home/money/%s/%d" % (mode, money_id), params)
+    def update(self, mode, money_id, mapping=1, amount=None,
+               date=None, from_account_id=None, to_account_id=None,
+               genre_id=None, category_id=None, comment=None):
+        return self.__put(u"/home/money/%s/%d" % (mode, money_id),
+                          mapping=1, amount=amount,
+                          date=date, from_account_id=from_account_id, to_account_id=to_account_id,
+                          genre_id=genre_id, category_id=category_id, comment=comment)
