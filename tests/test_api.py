@@ -64,6 +64,8 @@ class TestApi(unittest.TestCase):
         response = self.api.update('payment', response['money']['id'], 
             amount=1,
             date='2020-04-01',
+            place='updated place',
+            name='updated name',
             comment='updated comment')
         self.assertIn('money', response.keys())
         self.api.delete('payment', response['money']['id'])

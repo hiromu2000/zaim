@@ -97,10 +97,11 @@ class Api(object):
     def delete(self, mode, money_id):
         return self.__delete(u"/home/money/%s/%d" % (mode, money_id))
 
-    def update(self, mode, money_id, mapping=1, amount=None,
+    # 'place' and 'name' can be updated, despite not explictily stated in https://dev.zaim.net
+    def update(self, mode, money_id, mapping=1, amount=None, place=None, name=None,
                date=None, from_account_id=None, to_account_id=None,
                genre_id=None, category_id=None, comment=None):
         return self.__put(u"/home/money/%s/%d" % (mode, money_id),
-                          mapping=1, amount=amount,
+                          mapping=1, amount=amount, place=place, name=name,
                           date=date, from_account_id=from_account_id, to_account_id=to_account_id,
                           genre_id=genre_id, category_id=category_id, comment=comment)
