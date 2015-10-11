@@ -1,8 +1,11 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
+"""Python bindings for the Zaim API"""
+from __future__ import print_function
 import requests
 from requests_oauthlib import OAuth1
 
 class Api(object):
+    """A wrapper class for the Zaim API"""
     def __init__(self, consumer_key=None, consumer_secret=None, access_token=None, access_token_secret=None):
         if not (consumer_key is None or consumer_secret is None or access_token is None or access_token_secret is None):
             self.auth = OAuth1(consumer_key, consumer_secret, access_token, access_token_secret)
@@ -22,7 +25,7 @@ class Api(object):
         try:
             return r.json()
         except ValueError:
-            print r.text
+            print(r.text)
             raise
 
     def __put(self, path, **kwargs):
@@ -30,7 +33,7 @@ class Api(object):
         try:
             return r.json()
         except ValueError:
-            print r.text
+            print(r.text)
             raise
 
     def __delete(self, path):
@@ -38,7 +41,7 @@ class Api(object):
         try:
             return r.json()
         except ValueError:
-            print r.text
+            print(r.text)
             raise
 
     def verify(self):
