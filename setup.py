@@ -78,6 +78,8 @@ setup(
     install_requires=[
         'requests<2.6.0',
         'requests_oauthlib',
+        'six',
+        'future',
     ],
 
     # List additional groups of dependencies here (e.g. development

@@ -1,6 +1,4 @@
-# coding: utf-8
-import requests
-from requests_oauthlib import OAuth1
+# -*- coding: utf-8 -*-
 from api import Api
 
 class ExtendedApi(Api):

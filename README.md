@@ -2,14 +2,14 @@
 Python bindings for the Zaim API
 
 # How to use
-For functions that require no authentication
+## For functions that require no authentication
 ```python
 >>> import zaim
 >>> api = zaim.Api()
 >>> api.default_account()
 ```
 
-For functions that require authentication
+## For functions that require authentication
 ```python
 >>> import zaim
 >>> api = zaim.Api(consumer_key='consumer_key',
@@ -22,7 +22,7 @@ For functions that require authentication
 >>> api.delete(mode='payment', money_id=response['money']['id'])
 ```
 
-For extended functions
+## For extended functions
 ```python
 >>> import zaim
 >>> api = zaim.ExtendedApi(consumer_key='consumer_key',
@@ -36,10 +36,20 @@ For extended functions
 >>> api.genre_from_name(u'カフェ')
 ```
 
+## Get access token
+```python
+$ export ZAIM_CONSUMER_KEY="YOUR CONSUMER KEY"
+$ export ZAIM_CONSUMER_SECRET="YOUR CONSUMER SECRET"
+$ export ZAIM_CALLBACK_URI="YOUR SERVICE URL"
+$ python get_access_token.py
+```
+
 # Test
 ```
 $ cd /path/to/zaim
 $ export PYTHONPATH=$PYTHONPATH:/path/to/zaim/zaim
+$ python tests/test_zaim_no_auth.py
+
 $ export ZAIM_CONSUMER_KEY=consumer_key
 $ export ZAIM_CONSUMER_SECRET=consumer_secret
 $ export ZAIM_ACCESS_TOKEN=access_token
@@ -57,7 +67,6 @@ $ python setup.py bdist_wheel --universal
 # ToDo
 
 - Documentation (written in Sphinx (reST) and hosted in readthedocs)
-- Get the access token and secret
 
 # Acknowledgements
 - A part of the codes is originally from [here](https://github.com/konomae/zaimpy).
