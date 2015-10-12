@@ -54,5 +54,10 @@ $ python setup.py sdist
 $ python setup.py bdist_wheel --universal
 ```
 
+# ToDo
+
+- Documentation (written in Sphinx (reST) and hosted in readthedocs)
+- Get the access token and secret
+
 # Acknowledgements
 - A part of the codes is originally from [here](https://github.com/konomae/zaimpy).
