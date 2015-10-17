@@ -1,14 +1,24 @@
+zaim
+====
+
+Python bindings for the Zaim API.
+This also includes a command-line script (``zaim``).
+
 How to use
 ==========
 
-For functions requiring no authentication::
+For functions requiring no authentication
+
+.. code-block:: python
 
     >>> import zaim
     >>> api = zaim.Api()
     >>> api.default_account()
 
 
-For functions requiring authentication::
+For functions requiring authentication
+
+.. code-block:: python
 
     >>> import zaim
     >>> api = zaim.Api(consumer_key='consumer_key',
@@ -31,7 +41,9 @@ For functions requiring authentication::
     >>> api.delete(mode='payment',
                    money_id=response['money']['id'])
 
-For extended functions::
+For extended functions
+
+.. code-block:: python
 
     >>> import zaim
     >>> api = zaim.ExtendedApi(consumer_key='consumer_key',
@@ -56,12 +68,14 @@ For extended functions::
     >>> api.category_from_name(u'食費')
     >>> api.genre_from_name(u'カフェ')
 
-Get access token::
+How to use the command-line script
+==================================
+
+.. code-block:: bash
 
     $ export ZAIM_CONSUMER_KEY="YOUR CONSUMER KEY"
     $ export ZAIM_CONSUMER_SECRET="YOUR CONSUMER SECRET"
-    $ export ZAIM_CALLBACK_URI="YOUR SERVICE URL"
-    $ python get_access_token.py
+    $ zaim token_get --callback-uri http://example.com
 
 How to develop
 ==============
@@ -69,7 +83,7 @@ How to develop
 Test
 ----
 
-::
+.. code-block:: bash
 
     $ cd /path/to/zaim
     $ export PYTHONPATH=$PYTHONPATH:/path/to/zaim/zaim
@@ -85,7 +99,7 @@ Test
 Build
 -----
 
-::
+.. code-block:: bash
 
     $ python setup.py sdist
     $ python setup.py bdist_wheel --universal
@@ -94,6 +108,7 @@ ToDo
 ----
 
 - Documentation (written in Sphinx (reST) and hosted in readthedocs)
+- Enrich the command-line script
 
 Acknowledgements
 ================

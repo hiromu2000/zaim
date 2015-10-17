@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from api import Api
+from .api import Api
 
 class ExtendedApi(Api):
     def search(self, place=None, name=None, comment=None, amount=None,
