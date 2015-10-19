@@ -76,7 +76,7 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
-        'requests<2.6.0',
+        'requests',
         'requests_oauthlib',
         'six',
         'future',

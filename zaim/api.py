@@ -7,6 +7,9 @@ except ImportError:
 import requests
 from requests_oauthlib import OAuth1
 
+import logging
+logging.captureWarnings(True)
+
 class Api(object):
     """A wrapper class for the Zaim API"""
     def __init__(self, consumer_key=None, consumer_secret=None, access_token=None, access_token_secret=None):
