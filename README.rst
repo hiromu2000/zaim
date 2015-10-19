@@ -92,9 +92,21 @@ Test
     $ export ZAIM_CONSUMER_KEY=consumer_key
     $ export ZAIM_CONSUMER_SECRET=consumer_secret
     $ export ZAIM_ACCESS_TOKEN=access_token
-    $ export ZAIM_ACCESS_TOKEN_SECRET= access_token_secret
+    $ export ZAIM_ACCESS_TOKEN_SECRET=access_token_secret
     $ python tests/test_api.py
     $ python tests/test_extended_api.py
+
+or simply
+
+.. code-block:: bash
+
+    $ sudo pip install tox
+    $ cd /path/to/zaim
+    $ export ZAIM_CONSUMER_KEY=consumer_key
+    $ export ZAIM_CONSUMER_SECRET=consumer_secret
+    $ export ZAIM_ACCESS_TOKEN=access_token
+    $ export ZAIM_ACCESS_TOKEN_SECRET=access_token_secret
+    $ tox
 
 Build
 -----
