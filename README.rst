@@ -4,6 +4,20 @@ zaim
 Python bindings for the Zaim API.
 This also includes a command-line script (``zaim``).
 
+How to install
+==============
+
+.. code-block:: bash
+
+    $ pip install zaim
+
+or
+
+.. code-block:: bash
+
+    $ git clone https://github.com/hiromu2000/zaim
+    $ python setup.py install
+
 How to use
 ==========
 
@@ -76,6 +90,14 @@ How to use the command-line script
     $ export ZAIM_CONSUMER_KEY="YOUR CONSUMER KEY"
     $ export ZAIM_CONSUMER_SECRET="YOUR CONSUMER SECRET"
     $ zaim token_get --callback-uri http://example.com
+
+.. code-block:: bash
+
+    $ export ZAIM_CONSUMER_KEY=consumer_key
+    $ export ZAIM_CONSUMER_SECRET=consumer_secret
+    $ export ZAIM_ACCESS_TOKEN=access_token
+    $ export ZAIM_ACCESS_TOKEN_SECRET=access_token_secret
+    $ zaim money
 
 How to develop
 ==============

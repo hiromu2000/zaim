@@ -14,11 +14,10 @@ class Api(object):
     """A wrapper class for the Zaim API"""
     def __init__(self, consumer_key=None, consumer_secret=None, access_token=None, access_token_secret=None):
         if consumer_key is not None and consumer_secret is not None:
+            self.consumer_key = consumer_key
+            self.consumer_secret = consumer_secret
             if access_token is not None and access_token_secret is not None:
                 self.auth = OAuth1(consumer_key, consumer_secret, access_token, access_token_secret)
-            else:
-                self.consumer_key = consumer_key
-                self.consumer_secret = consumer_secret
 
     def __post(self, path, **kwargs):
         r = requests.post(u"https://api.zaim.net/v2" + path, auth=self.auth, data=kwargs)
@@ -51,18 +50,24 @@ class Api(object):
         except ValueError:
             raise Exception(r.text)
 
-    def get_authorize_url(self, callback_uri):
+    def get_request_token(self, callback_uri):
         auth = OAuth1(self.consumer_key, self.consumer_secret, callback_uri=callback_uri)
         r = requests.post("https://api.zaim.net/v2/auth/request", auth=auth)
-        self.request_token = dict(parse_qsl(r.text))
-        return "https://www.zaim.net/users/auth?oauth_token=%s" % self.request_token['oauth_token']
+        request_token = dict(parse_qsl(r.text))
+        self.request_token = request_token['oauth_token']
+        self.request_token_secret = request_token['oauth_token_secret']
+        return request_token
 
     def get_access_token(self, oauth_verifier):
         auth = OAuth1(self.consumer_key, self.consumer_secret,
-                      self.request_token["oauth_token"], self.request_token["oauth_token_secret"],
+                      self.request_token, self.request_token_secret,
                       verifier=oauth_verifier)
         r = requests.post("https://api.zaim.net/v2/auth/access", auth=auth)
         access_token = dict(parse_qsl(r.text))
+        self.auth = OAuth1(self.consumer_key,
+                           self.consumer_secret,
+                           access_token['oauth_token'],
+                           access_token['oauth_token_secret'])
         return access_token
 
     def verify(self):

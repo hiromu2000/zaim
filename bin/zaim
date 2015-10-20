@@ -1,34 +1,93 @@
 #!/usr/bin/env python
 # coding: utf-8
 import os
+import sys
 import zaim
 import six
 import argparse
+from tabulate import tabulate
+from pprint import pprint
 from builtins import input
 
-def token_get(args):
-    consumer_key = os.environ.get("ZAIM_CONSUMER_KEY", "")
-    consumer_secret = os.environ.get("ZAIM_CONSUMER_SECRET", "")
-    callback_uri = args.callback_uri
-    assert consumer_key, 'Please set "ZAIM_CONSUMER_KEY".'
-    assert consumer_secret, 'Please set "ZAIM_CONSUMER_SECRET".'
-    api = zaim.Api(consumer_key, consumer_secret)
+def print_(args, table):
+    if args.json:
+        pprint(table)
+    else:
+        six.print_(tabulate(table, headers="keys"))
 
-    authorize_url = api.get_authorize_url(callback_uri)
-    six.print_("AUTHORIZE_URL:", authorize_url)
-    six.print_("Please visit AUTHORIZE_URL w/ your browser, and login w/ your Zaim credentials.")
-    six.print_("When redirected to your callback URI, find the oauth_verifier in the address bar.")
+def common_func(args, api):
+    fun = getattr(api, args.funcname, None)
+    print_(args, fun()[args.key])
+
+def verify(args, api):
+    table = [api.verify()['me']]
+    print_(args, table)
+
+def money(args, api):
+    table = api.money(category_id=args.category_id,
+                      genre_id=args.genre_id,
+                      mode=args.mode,
+                      order=args.order,
+                      start_date=args.start_date,
+                      end_date=args.end_date,
+                      page=args.page,
+                      limit=args.limit,
+                      group_by=args.group_by)['money']
+    print_(args, table)
+
+def token_get(args, api):
+    callback_uri = args.callback_uri
+    request_token = api.get_request_token(callback_uri)
+    six.print_("AUTHORIZE_URL: https://www.zaim.net/users/auth?oauth_token=%s" % request_token['oauth_token'])
     oauth_verifier = input("oauth_verifier? : ")
-    six.print_("OAUTH_VERIFIER:", oauth_verifier)
     access_token = api.get_access_token(oauth_verifier)
-    six.print_("ACCESS_TOKEN:", access_token)
+    six.print_("ACCESS_TOKEN:", access_token['oauth_token'])
+    six.print_("ACCESS_TOKEN_SECRET:", access_token['oauth_token_secret'])
 
 if __name__ == '__main__':
-   parser = argparse.ArgumentParser(description='Zaim CLI')
-   sp = parser.add_subparsers()
-   sp_token_get = sp.add_parser('token_get')
-   sp_token_get.add_argument('--callback-uri')
-   sp_token_get.set_defaults(func=token_get)
+    parser = argparse.ArgumentParser(description='Zaim CLI')
+    sp = parser.add_subparsers()
+    # token_get
+    sp_token_get = sp.add_parser('token_get')
+    sp_token_get.add_argument('--callback-uri', required=True)
+    sp_token_get.set_defaults(func=token_get)
+    # verify
+    sp_ = sp.add_parser('verify')
+    sp_.add_argument('--json', action="store_true")
+    sp_.set_defaults(func=verify)
+    # money
+    sp_ = sp.add_parser('money')
+    sp_.add_argument('--json', action="store_true")
+    sp_.add_argument('--category-id', type=int, default=None)
+    sp_.add_argument('--genre-id', type=int, default=None)
+    sp_.add_argument('--mode', choices=['payment', 'income', 'transfer'], default=None)
+    sp_.add_argument('--order', choices=['id', 'date'], default=None)
+    sp_.add_argument('--start-date', default=None)
+    sp_.add_argument('--end-date', default=None)
+    sp_.add_argument('--page', type=int, default=1)
+    sp_.add_argument('--limit', type=int, default=20)
+    sp_.add_argument('--group-by', choices=['receipt_id'], default=None)
+    sp_.set_defaults(func=money)
+    # others
+    funcs = [
+        {'funcname': 'account', 'key': 'accounts'},
+        {'funcname': 'category', 'key': 'categories'},
+        {'funcname': 'genre', 'key': 'genres'},
+        {'funcname': 'default_account', 'key': 'accounts'},
+        {'funcname': 'default_category', 'key': 'categories'},
+        {'funcname': 'default_genre', 'key': 'genres'},
+        {'funcname': 'default_currency', 'key': 'currencies'},
+    ]
+    for func in funcs:
+        sp_ = sp.add_parser(func['funcname']) 
+        sp_.add_argument('--json', action="store_true")
+        sp_.set_defaults(func=common_func, **func)
 
-   args = parser.parse_args()
-   args.func(args)
+    consumer_key = os.environ.get("ZAIM_CONSUMER_KEY", "")
+    consumer_secret = os.environ.get("ZAIM_CONSUMER_SECRET", "")
+    access_token = os.environ.get("ZAIM_ACCESS_TOKEN", "")
+    access_token_secret = os.environ.get("ZAIM_ACCESS_TOKEN_SECRET", "")
+    api = zaim.Api(consumer_key, consumer_secret, access_token, access_token_secret)
+
+    args = parser.parse_args()
+    args.func(args, api)

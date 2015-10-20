@@ -80,6 +80,7 @@ setup(
         'requests_oauthlib',
         'six',
         'future',
+        'tabulate',
     ],
 
     # List additional groups of dependencies here (e.g. development
