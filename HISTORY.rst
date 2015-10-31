@@ -1,3 +1,10 @@
+0.2.1 (2015-10-31)
+------------------
+
+**New Features**
+
+* Added all READ operations to the command-line script (``zaim``).
+
 0.2.0 (2015-10-17)
 ------------------
 
