@@ -1,3 +1,11 @@
+0.2.2 (2015-11-XX)
+------------------
+
+**New Features**
+
+* Added Create, Update, and Delete operations to the command-line script (``zaim``).
+* Added ``place`` to the list of arguments of ``income``.
+
 0.2.1 (2015-10-31)
 ------------------
 

@@ -79,8 +79,9 @@ For extended functions
                    comment='comment')
     >>> api.delete(mode='payment',
                    money_id=response['money']['id'])
-    >>> api.category_from_name(u'食費')
-    >>> api.genre_from_name(u'カフェ')
+    >>> api.search_category(u'食費')
+    >>> api.search_genre(u'カフェ')
+    >>> api.search_account(u'銀行')
 
 How to use the command-line script
 ==================================
@@ -98,6 +99,8 @@ How to use the command-line script
     $ export ZAIM_ACCESS_TOKEN=access_token
     $ export ZAIM_ACCESS_TOKEN_SECRET=access_token_secret
     $ zaim money
+    $ zaim payment --category-id 101 --genre-id 10101 --amount 1 --date '2020-04-01' --comment 'comment' --name 'name' --place 'place'
+    $ zaim delete --mode payment --money-id XXXXXXXXX
 
 How to develop
 ==============
@@ -143,6 +146,7 @@ ToDo
 
 - Documentation (written in Sphinx (reST) and hosted in readthedocs)
 - Enrich the command-line script
+- Argument validation for CLI (e.g., account-id)
 
 Acknowledgements
 ================

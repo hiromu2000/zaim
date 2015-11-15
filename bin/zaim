@@ -7,13 +7,24 @@ import six
 import argparse
 from tabulate import tabulate
 from pprint import pprint
+from datetime import datetime
 from builtins import input
 
 def print_(args, table):
     if args.json:
         pprint(table)
     else:
-        six.print_(tabulate(table, headers="keys"))
+        if len(table) == 0:
+            six.print_('Not found')
+        else:
+            six.print_(tabulate(table, headers="keys"))
+
+def valid_date(s):
+    try:
+        return datetime.strptime(s, "%Y-%m-%d")
+    except ValueError:
+        msg = "Not a valid date: '%s'." % s
+        raise argparse.ArgumentTypeError(msg)
 
 def common_func(args, api):
     fun = getattr(api, args.funcname, None)
@@ -34,6 +45,53 @@ def money(args, api):
                       limit=args.limit,
                       group_by=args.group_by)['money']
     print_(args, table)
+
+def payment(args, api):
+    table = api.payment(category_id=args.category_id,
+                        genre_id=args.genre_id,
+                        amount=args.amount,
+                        date=args.date,
+                        from_account_id=args.from_account_id,
+                        comment=args.comment,
+                        name=args.name,
+                        place=args.place)
+    pprint(table)
+
+def income(args, api):
+    table = api.income(category_id=args.category_id,
+                       amount=args.amount,
+                       date=args.date,
+                       to_account_id=args.to_account_id,
+                       comment=args.comment,
+                       place=args.place)
+    pprint(table)
+
+def transfer(args, api):
+    table = api.transfer(amount=args.amount,
+                         date=args.date,
+                         from_account_id=args.from_account_id,
+                         to_account_id=args.to_account_id,
+                         comment=args.comment)
+    pprint(table)
+
+def update(args, api):
+    table = api.update(mode=args.mode,
+                       money_id=args.money_id,
+                       amount=args.amount,
+                       date=args.date,
+                       category_id=args.category_id,
+                       genre_id=args.genre_id,
+                       from_account_id=args.from_account_id,
+                       to_account_id=args.to_account_id,
+                       comment=args.comment,
+                       name=args.name,
+                       place=args.place)
+    pprint(table)
+
+def delete(args, api):
+    table = api.delete(mode=args.mode,
+                       money_id=args.money_id)
+    pprint(table)
 
 def token_get(args, api):
     callback_uri = args.callback_uri
@@ -58,16 +116,64 @@ if __name__ == '__main__':
     # money
     sp_ = sp.add_parser('money')
     sp_.add_argument('--json', action="store_true")
-    sp_.add_argument('--category-id', type=int, default=None)
-    sp_.add_argument('--genre-id', type=int, default=None)
-    sp_.add_argument('--mode', choices=['payment', 'income', 'transfer'], default=None)
-    sp_.add_argument('--order', choices=['id', 'date'], default=None)
-    sp_.add_argument('--start-date', default=None)
-    sp_.add_argument('--end-date', default=None)
+    sp_.add_argument('--category-id', type=int)
+    sp_.add_argument('--genre-id', type=int)
+    sp_.add_argument('--mode', choices=['payment', 'income', 'transfer'])
+    sp_.add_argument('--order', choices=['id', 'date'])
+    sp_.add_argument('--start-date', type=valid_date)
+    sp_.add_argument('--end-date', type=valid_date)
     sp_.add_argument('--page', type=int, default=1)
     sp_.add_argument('--limit', type=int, default=20)
-    sp_.add_argument('--group-by', choices=['receipt_id'], default=None)
+    sp_.add_argument('--group-by', choices=['receipt_id'])
     sp_.set_defaults(func=money)
+    # payment
+    sp_ = sp.add_parser('payment')
+    sp_.add_argument('--category-id', type=int, required=True)
+    sp_.add_argument('--genre-id', type=int, required=True)
+    sp_.add_argument('--amount', type=int, required=True)
+    sp_.add_argument('--date', type=valid_date, required=True)
+    sp_.add_argument('--from-account-id', type=int)
+    sp_.add_argument('--comment')
+    sp_.add_argument('--name')
+    sp_.add_argument('--place')
+    sp_.set_defaults(func=payment)
+    # income
+    sp_ = sp.add_parser('income')
+    sp_.add_argument('--category-id', type=int, required=True)
+    sp_.add_argument('--amount', type=int, required=True)
+    sp_.add_argument('--date', type=valid_date, required=True)
+    sp_.add_argument('--to-account-id', type=int)
+    sp_.add_argument('--comment')
+    sp_.add_argument('--place')
+    sp_.set_defaults(func=income)
+    # transfer
+    sp_ = sp.add_parser('transfer')
+    sp_.add_argument('--amount', type=int, required=True)
+    sp_.add_argument('--date', type=valid_date, required=True)
+    sp_.add_argument('--from-account-id', type=int, required=True)
+    sp_.add_argument('--to-account-id', type=int, required=True)
+    sp_.add_argument('--comment')
+    sp_.set_defaults(func=transfer)
+    # update
+    sp_ = sp.add_parser('update')
+    sp_.add_argument('--mode', choices=['payment', 'income', 'transfer'], required=True)
+    sp_.add_argument('--money-id', type=int, required=True)
+    sp_.add_argument('--amount', type=int, required=True)
+    sp_.add_argument('--date', type=valid_date) # not required
+    sp_.add_argument('--from-account-id', type=int)
+    sp_.add_argument('--to-account-id', type=int)
+    sp_.add_argument('--category-id', type=int)
+    sp_.add_argument('--genre-id', type=int)
+    sp_.add_argument('--comment')
+    sp_.add_argument('--name')
+    sp_.add_argument('--place')
+    sp_.set_defaults(func=update)
+    # delete
+    sp_ = sp.add_parser('delete')
+    sp_.add_argument('--mode', choices=['payment', 'income', 'transfer'], required=True)
+    sp_.add_argument('--money-id', type=int, required=True)
+    sp_.set_defaults(func=delete)
+
     # others
     funcs = [
         {'funcname': 'account', 'key': 'accounts'},
