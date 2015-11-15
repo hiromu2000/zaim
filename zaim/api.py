@@ -112,10 +112,11 @@ class Api(object):
                            comment=comment, name=name, place=place)
 
     def income(self, mapping=1, category_id=None, amount=None,
-               date=None, to_account_id=None, comment=None):
+               date=None, to_account_id=None, comment=None, place=None):
         return self.__post(u"/home/money/income",
                            mapping=1, category_id=category_id, amount=amount,
-                           date=date, to_account_id=to_account_id, comment=comment)
+                           date=date, to_account_id=to_account_id, comment=comment,
+                           place=place)
 
     def transfer(self, mapping=1, amount=None, date=None,
                  from_account_id=None, to_account_id=None, comment=None):
