@@ -34,62 +34,45 @@ def verify(args, api):
     print_(args, table)
 
 def money(args, api):
-    table = api.money(category_id=args.category_id,
-                      genre_id=args.genre_id,
-                      mode=args.mode,
-                      order=args.order,
-                      start_date=args.start_date,
-                      end_date=args.end_date,
-                      page=args.page,
-                      limit=args.limit,
-                      group_by=args.group_by)['money']
+    kwargs = vars(args).copy()
+    kwargs.pop('func', None)
+    kwargs.pop('json', None)
+    table = api.money(**kwargs)['money']
     print_(args, table)
 
 def payment(args, api):
-    table = api.payment(category_id=args.category_id,
-                        genre_id=args.genre_id,
-                        amount=args.amount,
-                        date=args.date,
-                        from_account_id=args.from_account_id,
-                        comment=args.comment,
-                        name=args.name,
-                        place=args.place)
+    kwargs = vars(args).copy()
+    kwargs.pop('func', None)
+    kwargs.pop('json', None)
+    table = api.payment(**kwargs)
     pprint(table)
 
 def income(args, api):
-    table = api.income(category_id=args.category_id,
-                       amount=args.amount,
-                       date=args.date,
-                       to_account_id=args.to_account_id,
-                       comment=args.comment,
-                       place=args.place)
+    kwargs = vars(args).copy()
+    kwargs.pop('func', None)
+    kwargs.pop('json', None)
+    table = api.income(**kwargs)
     pprint(table)
 
 def transfer(args, api):
-    table = api.transfer(amount=args.amount,
-                         date=args.date,
-                         from_account_id=args.from_account_id,
-                         to_account_id=args.to_account_id,
-                         comment=args.comment)
+    kwargs = vars(args).copy()
+    kwargs.pop('func', None)
+    kwargs.pop('json', None)
+    table = api.transfer(**kwargs)
     pprint(table)
 
 def update(args, api):
-    table = api.update(mode=args.mode,
-                       money_id=args.money_id,
-                       amount=args.amount,
-                       date=args.date,
-                       category_id=args.category_id,
-                       genre_id=args.genre_id,
-                       from_account_id=args.from_account_id,
-                       to_account_id=args.to_account_id,
-                       comment=args.comment,
-                       name=args.name,
-                       place=args.place)
+    kwargs = vars(args).copy()
+    kwargs.pop('func', None)
+    kwargs.pop('json', None)
+    table = api.update(**kwargs)
     pprint(table)
 
 def delete(args, api):
-    table = api.delete(mode=args.mode,
-                       money_id=args.money_id)
+    kwargs = vars(args).copy()
+    kwargs.pop('func', None)
+    kwargs.pop('json', None)
+    table = api.delete(**kwargs)
     pprint(table)
 
 def token_get(args, api):
