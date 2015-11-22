@@ -4,6 +4,9 @@ zaim
 .. image:: https://travis-ci.org/hiromu2000/zaim.svg?branch=master
     :target: https://travis-ci.org/hiromu2000/zaim
 
+.. image:: https://img.shields.io/pypi/dm/zaim.svg
+    :target: https://pypi.python.org/pypi/zaim
+
 Python bindings for the Zaim API.
 This also includes a command-line script (``zaim``).
 
@@ -102,7 +105,8 @@ How to use the command-line script
     $ export ZAIM_ACCESS_TOKEN=access_token
     $ export ZAIM_ACCESS_TOKEN_SECRET=access_token_secret
     $ zaim money
-    $ zaim payment --category-id 101 --genre-id 10101 --amount 1 --date '2020-04-01' --comment 'comment' --name 'name' --place 'place'
+    $ zaim payment --category-id 101 --genre-id 10101 --amount 1 --place 'place'
+                   --date '2020-04-01' --comment 'comment' --name 'name'
     $ zaim delete --mode payment --money-id XXXXXXXXX
 
 How to develop
