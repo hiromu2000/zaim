@@ -1,6 +1,9 @@
 zaim
 ====
 
+.. image:: https://travis-ci.org/hiromu2000/zaim.svg?branch=master
+    :target: https://travis-ci.org/hiromu2000/zaim
+
 Python bindings for the Zaim API.
 This also includes a command-line script (``zaim``).
 
