@@ -3,8 +3,11 @@ matrix:
   include:
     - python: 2.7
       env: TOXENV=py27
-    - python: 3.4
-      env: TOXENV=py34
+    - python: 3.6
+      env: TOXENV=py36
+    - python: 3.7
+      dist: xenial
+      env: TOXENV=py37
 env:
   global:
     - secure: FbVSGiDMJ3bJzw4xoSq4ak7JE2SpG3ZosvrNlUHL1EBoyveNt7URlzHKC5lw0UwfwWMHuW//u6UCghXZEQN1kW4l7FiCHp+c8jg1I/7P/gH8CLB7JXF6wWOeM88J7fLL9QrmZ4XdNhrYKh0iXGiVPd60/NVsHLZZfH6Y14MoxlWievQvjeqXjYHVrmVkDR35ilV1JtNBugPykytVKNLoAIXVeIBT3P4XF6jnxqjF/nGLungTLwD1BIMLrAahvrnO4w3Q/0XJl+QRzrn1jucjFideT+q0NvcXk7VtY/QTdusmiL5NJ5UZTOhkRxlHfMPkklmxxTOPrRgqbxEoD6GnCDer4JBZzmMAybFvMYZF6q+RoixOaOWyUyPfqSXHDul5C6HwJWRHlHDSrj6islQGGLMPTFVHEvoLtYQTqw4aAMzUUbJp9U9gHXTxsjrwQnOcNjShRdTN1ADnRiiXS4MUY43Zl4yag/mmUbB0KxaWhPFFBP5wTopg1S7wcgZzRb6DAMKXpbtKwdF4HOtbSXDfFevUjdwRMh5lYzZcjDWMhgWWlG4tSqMxhGWS97fMxm7C/ft4xUFwX2ko4Q/H3L7B12ov9n8rme5wdloyXeIzTSMSarNVpkRRLESfURnwZ+3xjQTT44tGiqh03UJbLLNv6dvYemftY2WT1QMZLOtwIWI=
