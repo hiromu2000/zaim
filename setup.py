@@ -15,7 +15,10 @@ here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the relevant file
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
-    long_description = f.read()
+    readme = f.read()
+
+with open(path.join(here, 'HISTORY.rst'), encoding='utf-8') as f:
+    history = f.read()
 
 setup(
     name='zaim',
@@ -26,7 +29,7 @@ setup(
     version='0.2.2',
 
     description='Python bindings for the Zaim API',
-    long_description=long_description,
+    long_description=readme + '\n\n' + history,
 
     # The project's main homepage.
     url='https://github.com/hiromu2000/zaim',
