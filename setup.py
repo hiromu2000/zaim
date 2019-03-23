@@ -30,6 +30,7 @@ setup(
 
     description='Python bindings for the Zaim API',
     long_description=readme + '\n\n' + history,
+    long_description_content_type='text/x-rst',
 
     # The project's main homepage.
     url='https://github.com/hiromu2000/zaim',
