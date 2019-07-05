@@ -78,7 +78,7 @@ def delete(args, api):
 def token_get(args, api):
     callback_uri = args.callback_uri
     request_token = api.get_request_token(callback_uri)
-    six.print_("AUTHORIZE_URL: https://www.zaim.net/users/auth?oauth_token=%s" % request_token['oauth_token'])
+    six.print_("AUTHORIZE_URL: https://auth.zaim.net/users/auth?oauth_token=%s" % request_token['oauth_token'])
     oauth_verifier = input("oauth_verifier? : ")
     access_token = api.get_access_token(oauth_verifier)
     six.print_("ACCESS_TOKEN:", access_token['oauth_token'])
